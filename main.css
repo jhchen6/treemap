@@ -1,0 +1,9 @@
+svg {
+    border: 1px solid lightgray;
+    font: 10px sans-serif;
+    
+}
+rect{
+    stroke: white;
+    stroke-width: 1px;
+}
