@@ -14,9 +14,10 @@ $(document).ready(function () {
     display(tree, svg);
 
     $("input[name='mode']").change(function () {
-        mode = $("input[name='mode']:checked").val(),
-            buildTree = initBuildTree().sum(mode),
-            tree = buildTree(data, null);
+        svg.innerHTML = "";
+        mode = $("input[name='mode']:checked").val();
+        buildTree = initBuildTree().sum(mode);
+        tree = buildTree(data, null);
         divide(tree);
         display(tree, svg);
     });
@@ -92,24 +93,93 @@ function initDivide() {
             w = tree.w,
             h = tree.h;
 
-        for (var i = 0; i < len; i++) {
-            subTree = tree.children[i];
-            area = ratio * subTree.sum;
-            subTree.x = x;
-            subTree.y = y;
-            if (w < h) {
+        // for (var i = 0; i < len; i++) {
+        //     subTree = tree.children[i];
+        //     area = ratio * subTree.sum;
+        //     subTree.x = x;
+        //     subTree.y = y;
+        //     if (w < h) {
+        //         subTree.w = w;
+        //         subTree.h = area / w;
+        //         y += subTree.h;
+        //         h -= subTree.h;
+        //     }
+        //     else {
+        //         subTree.h = h;
+        //         subTree.w = area / h;
+        //         x += subTree.w;
+        //         w -= subTree.w;
+        //     }
+        //     divide(subTree);
+        // }
+
+        var sums = calSums();
+        divideAboutHalf(0, len, x, y, w, h);
+
+        tree.children.forEach(function (subTree) {
+            divide(subTree);
+        });
+
+        function calSums() {
+            var sums = [];
+            sums[0] = 0;
+            for (var i = 0; i < len; i++) {
+                sums[i + 1] = sums[i] + tree.children[i].sum;
+            }
+            return sums;
+        }
+
+        function divideAboutHalf(left, right, x, y, w, h) {//[left, right)
+            if (left >= right) {
+                return;
+            }
+            if (left == right - 1) {
+                var subTree = tree.children[left];
+                subTree.x = x;
+                subTree.y = y;
                 subTree.w = w;
-                subTree.h = area / w;
-                y += subTree.h;
-                h -= subTree.h;
+                subTree.h = h;
+                return;
+            }
+
+            var sumLeft = sums[left],
+                sum = sums[right] - sumLeft,
+                r;
+            for (r = left + 1; r <= right; r++) {
+                if (sums[r] - sumLeft > sum / 2) {
+                    break;
+                }
+            }
+            r--;
+            if (r == left)
+                r++;
+
+            var area1 = ratio * (sums[r] - sumLeft),
+                w1,
+                h1,
+                x2,
+                y2,
+                w2,
+                h2;
+            if (w < h) {
+                w1 = w;
+                h1 = area1 / w;
+                x2 = x;
+                y2 = y + h1;
+                w2 = w;
+                h2 = h - h1;
             }
             else {
-                subTree.h = h;
-                subTree.w = area / h;
-                x += subTree.w;
-                w -= subTree.w;
+                h1 = h;
+                w1 = area1 / h;
+                x2 = x + w1;
+                y2 = y;
+                w2 = w - w1;
+                h2 = h;
             }
-            divide(subTree);
+
+            divideAboutHalf(left, r, x, y, w1, h1);
+            divideAboutHalf(r, right, x2, y2, w2, h2);
         }
     }
 
