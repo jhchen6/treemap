@@ -143,10 +143,10 @@ function initDivide() {
             }
 
             var sumLeft = sums[left],
-                sum = sums[right] - sumLeft,
+                halfSum = (sums[right] - sumLeft) / 2,
                 r;
             for (r = left + 1; r <= right; r++) {
-                if (sums[r] - sumLeft > sum / 2) {
+                if (sums[r] - sumLeft > halfSum) {
                     break;
                 }
             }
