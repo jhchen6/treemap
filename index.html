@@ -3,23 +3,26 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>TreeMap</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Treemap</title>
   <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-  <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
-  <script src="main.js"></script>
+  <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
+  <script src="d3.js"></script>
 </head>
 
 <body>
-  <svg width="960" height="600"></svg>
-  <div id="choice">
-    <label><input type="radio" name="mode" value="size" checked=""> Size</label>
-    <label><input type="radio" name="mode" value="count"> Count</label>
-  </div>
+  <h1>Treemap</h1>
+  <p>This is a coding practice following Mike Bostock's
+    <a href="https://bl.ocks.org/mbostock/4063582">Treemap</a> example.</p>
+  <svg></svg>
+  <form>
+    <label><input type="radio" name="mode" value="size" checked="" /> Size</label>
+    <label><input type="radio" name="mode" value="count" /> Count</label>
+  </form>
   <div id="data">
     <a href="https://bl.ocks.org/mbostock/4063582#flare.json/">data</a>
   </div>
+  <script src="main.js"></script>
+  <!--!!important to wait till document ready!!-->
 </body>
 
 </html>
